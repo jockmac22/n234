@@ -1,0 +1,55 @@
+.Tile {
+  text-decoration: none;
+  width: 50px;
+  height: 50px;
+  display: inline-block;
+  border: 1px solid #000000;
+  border-right: 1px solid #CCCCCC;
+  border-bottom: 1px solid #CCCCCC;
+  border-radius: 5px;
+  margin-right: 5px;
+  text-align: center;
+  line-height: 50px;
+  vertical-align: middle;
+  font-size: 24px;
+  font-weight: bold;
+  color: #EEE;
+  cursor: pointer;
+}
+
+.Tile:last-child {
+  margin-right: 0;
+}
+
+.Tile.Tile-selected {
+  background: #000000;
+  color: #00AA00;
+}
+
+.Tile-value-1 {
+  background: #334;
+}
+.Tile-value-2 {
+  background: #335;
+}
+.Tile-value-3 {
+  background: #336;
+}
+.Tile-value-4 {
+  background: #337;
+}
+.Tile-value-5 {
+  background: #338;
+}
+.Tile-value-6 {
+  background: #339;
+}
+.Tile-value-7 {
+  background: #33A;
+}
+.Tile-value-8 {
+  background: #33B;
+}
+.Tile-value-9 {
+  background: #33C;
+}
