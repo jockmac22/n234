@@ -1,20 +1,62 @@
 .Game {
     display: inline-block;
     position: relative;
-    padding: 20px;
+    padding: 0;
+    text-align: center;
+
 }
 
-.Game-data, .Game-debug {
+@media only screen and (max-device-width: 667px) {
+  .Game {
+    display: block;
+  }
+}
+
+
+.Game-board {
+  display: inline-block;
+  width: 63%;
+  float: left;
+}
+
+@media only screen and (max-device-width: 667px) {
+  .Game-board {
+    display: block;
+    width: 100%;
+    float: none;
+  }
+}
+
+
+.Game-data,
+.Game-debug {
+  display: inline-block;
   padding: 10px;
   color: #EEE;
+  width: 33%;
+  float: left;
 }
 
-.Game-data span,
-.Game-debug span {
-  margin-right: 20px;
+@media only screen and (max-device-width: 667px) {
+  .Game-data,
+  .Game-debug {
+    float: none;
+    display: block;
+    width: 100%;
+  }
 }
 
-.Game-data span:last-child,
-.Game-debug span:last-child {
-  margin-right: 0;
+.Game-data .data,
+.Game-debug .data {
+  width: 50%;
+  margin: 0;
+  padding: 0;
+  float: left;
+}
+
+@media only screen and (max-device-width: 667px) {
+  .Game-data .data,
+  .Game-debug .data {
+    width: 100%;
+  }
 }

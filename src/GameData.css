@@ -1,0 +1,36 @@
+.GameData {
+  display: inline-block;
+  position: relative;
+  width: 50%;
+  text-align: center;
+}
+
+.GameData.full {
+  width: 100%;
+}
+
+@media only screen and (max-device-width: 667px) {
+  .GameData {
+    display: block;
+    width: 100%;
+  }
+}
+
+.GameData label {
+  display: block;
+  text-align: center;
+  font-size: 20px;
+  color: #FFAAAA;
+  background: #000000;
+  font-weight: bold;
+  padding: 5px;
+}
+
+.GameData div {
+  display: block;
+  text-align: center;
+  font-size: 20px;
+  color: #EEEEEE;
+  font-weight: bold;
+  padding: 10px;
+}

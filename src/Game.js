@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './Game.css';
 import Board from './Board';
+import GameData from './GameData';
 
 class Game extends Component {
   constructor(props) {
@@ -112,6 +113,7 @@ class Game extends Component {
     if (!valueSet)
       this.nextTile();
 
+    this.decreaseScore(val);
     return valueSet;
   }
 
@@ -184,6 +186,20 @@ class Game extends Component {
     this.updateState();
   }
 
+  increaseScore(amount) {
+    this.score += amount;
+    if (this.score >= this.highScore)
+      this.highScore = this.score;
+    this.updateState();
+  }
+
+  decreaseScore(amount) {
+    this.score -= amount;
+    if (this.score <= 0)
+      this.score = 0;
+    this.updateState();
+  }
+
   determineHitMiss() {
     if (this.current < this.target)
       return false;
@@ -196,7 +212,7 @@ class Game extends Component {
 
   hit() {
     this.hits   += 1;
-    this.score  += (this.target * 10);
+    this.increaseScore(this.target * 10);
     this.removeSelections();
 
     if (this.hits === 10)
@@ -270,26 +286,14 @@ class Game extends Component {
   render() {
     return (
       <div className="Game">
-        <div className="Game-data">
-          <span>
-            Round: {this.state.level}
-          </span>
-          <span>
-            Score: {this.state.score}
-          </span>
-          <span>
-            High Score: {this.state.highScore}
-          </span>
-          <span>
-            Target: {this.state.target}
-          </span>
-          <span>
-            Hits: {this.state.hits}
-          </span>
-
-        </div>
         <div className="Game-board">
           <Board grid={this.state.grid} tileClick={this.handleTileClick} />
+        </div>
+        <div className="Game-data">
+          <GameData label="Round" value={this.state.round} />
+          <GameData label="Target" value={this.state.target} />
+          <GameData label="Score" value={this.state.score} />
+          <GameData label="High Score" value={this.state.highScore} />
         </div>
         <div className="Game-debug">
           <span>
