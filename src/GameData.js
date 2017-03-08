@@ -4,9 +4,8 @@ import './GameData.css';
 class GameData extends Component {
   render() {
     return (
-      <div className={"GameData " + (this.props.full ? "full" : "half") }>
-        <label>{this.props.label}</label>
-        <div>{this.props.value}</div>
+      <div className={"GameData " + this.props.position}>
+        {this.props.children}
       </div>
     );
   }

@@ -1,9 +1,8 @@
 .Board {
     display: inline-block;
     position: relative;
-    border:   1px solid #CCCCCC;
-    border-bottom: 1px solid #000000;
-    border-right: 1px solid #000000;
-    border-radius: 10px;
+    border-radius: 0;
     padding: 5px;
+    background: #595D69;
+    margin: 0;
 }

@@ -1,24 +1,32 @@
 import React, { Component } from 'react';
 import './Game.css';
 import Board from './Board';
+import StartOverlay from './StartOverlay';
+import GameOverOverlay from './GameOverOverlay';
 import GameData from './GameData';
+import GameDataItem from './GameDataItem';
 
 class Game extends Component {
   constructor(props) {
     super(props);
     this.handleTileClick = this.handleTileClick.bind(this);
+    this.handleStartClick = this.handleStartClick.bind(this);
 
-    this.running    = true;
+    this.targets    = [2,3,5,8,13,21,34,55,89,144,233,377,610,987,1597,2584,4181,6765];
+    this.running    = false;
+    this.gameOver   = false;
+    this.lastValue  = 0;
     this.round      = 0;
     this.current    = 0;
     this.target     = 0;
     this.hits       = 0;
     this.score      = 0;
-    this.highScore  = 0;
+    this.highScore  = 3000;
     this.grid       = this.initialGrid();
 
     this.state      = {
       running:    this.running,
+      gameOver:   this.gameOver,
       round:      this.round,
       target:     this.target,
       current:    this.current,
@@ -101,18 +109,24 @@ class Game extends Component {
 
     if (this.gridIsFull()) {
       this.stop();
-      alert("Game Over");
+      this.gameOver = true;
+      this.highScore = Math.max(this.score, this.highScore);
+      this.updateState();
       return false;
     }
 
-    var x         = this.getRandomInt(0, this.maxX());
-    var y         = this.getRandomInt(0, this.maxY());
-    var val       = this.getRandomInt(1,this.state.target);
-    var valueSet  = this.setValue(x,y,val);
+    if (this.lastValue <= 1)
+      this.lastValue = this.target
+
+    var x           = this.getRandomInt(0, this.maxX());
+    var y           = this.getRandomInt(0, this.maxY());
+    var val         = this.getRandomInt(1, this.lastValue);
+    var valueSet    = this.setValue(x,y,val);
 
     if (!valueSet)
       this.nextTile();
 
+    this.lastValue  = (val-1);
     this.decreaseScore(val);
     return valueSet;
   }
@@ -151,11 +165,13 @@ class Game extends Component {
   }
 
   start() {
-    this.round = 1;
-    this.score = 0;
-    this.target = 2;
-    this.hits = 0;
-    this.current = 0;
+    this.grid     = this.initialGrid();
+    this.round    = 1;
+    this.score    = 0;
+    this.target   = this.targets[this.round-1];;
+    this.hits     = 0;
+    this.current  = 0;
+    this.clearGrid();
     this.updateState();
 
     this.run();
@@ -175,8 +191,8 @@ class Game extends Component {
     this.grid     = this.initialGrid();
     this.current  = 0;
     this.hits     = 0;
-    this.target   += 1;
     this.round    += 1;
+    this.target   = this.targets[this.round-1];
     this.updateState();
   }
 
@@ -188,8 +204,6 @@ class Game extends Component {
 
   increaseScore(amount) {
     this.score += amount;
-    if (this.score >= this.highScore)
-      this.highScore = this.score;
     this.updateState();
   }
 
@@ -262,8 +276,12 @@ class Game extends Component {
     this.determineHitMiss();
   }
 
-  componentDidMount() {
+  handleStartClick() {
     this.start();
+  }
+
+  componentDidMount() {
+
   }
 
   componentWillUnmount() {
@@ -273,6 +291,7 @@ class Game extends Component {
   updateState() {
     this.setState({
       running:    this.running,
+      gameOver:   this.gameOver,
       round:      this.round,
       target:     this.target,
       current:    this.current,
@@ -286,20 +305,25 @@ class Game extends Component {
   render() {
     return (
       <div className="Game">
+        {
+          (!this.running && !this.gameOver) ? (
+            <StartOverlay onStartClick={this.handleStartClick} />
+          ) : ((!this.running && this.gameOver) ? (
+            <GameOverOverlay onReplayClick={this.handleStartClick} />
+          ): null)
+        }
+        <GameData position="top">
+          <GameDataItem size="half" label="Score" value={this.state.score} />
+          <GameDataItem size="half" label="High" value={this.state.highScore} />
+        </GameData>
         <div className="Game-board">
           <Board grid={this.state.grid} tileClick={this.handleTileClick} />
         </div>
-        <div className="Game-data">
-          <GameData label="Round" value={this.state.round} />
-          <GameData label="Target" value={this.state.target} />
-          <GameData label="Score" value={this.state.score} />
-          <GameData label="High Score" value={this.state.highScore} />
-        </div>
-        <div className="Game-debug">
-          <span>
-            Current: {this.state.current}
-          </span>
-        </div>
+        <GameData position="bottom">
+          <GameDataItem size="third" label="Round" value={this.state.round} />
+          <GameDataItem size="third" label="Hits" value={this.state.hits + "/10"} />
+          <GameDataItem size="third" label="Target" value={this.state.target} />
+        </GameData>
       </div>
     );
   }

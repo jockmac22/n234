@@ -3,19 +3,21 @@
     position: relative;
     padding: 0;
     text-align: center;
-
+    width: 455px;
+    margin: 0 auto 0 auto;
+    font-size: 0;
 }
 
 @media only screen and (max-device-width: 667px) {
   .Game {
-    display: block;
+    width: 355px;
   }
 }
 
 
 .Game-board {
-  display: inline-block;
-  width: 63%;
+  display: block;
+  width: 100%;
   float: left;
 }
 
@@ -31,7 +33,7 @@
 .Game-data,
 .Game-debug {
   display: inline-block;
-  padding: 10px;
+  padding: 10px 0;
   color: #EEE;
   width: 33%;
   float: left;
